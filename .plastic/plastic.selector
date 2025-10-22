@@ -1,0 +1,4 @@
+repository "TheTeaShopSimulator/TheTeaShopSimulator@3574333458221@cloud"
+  path "/"
+    br "/main"
+    co "/main"

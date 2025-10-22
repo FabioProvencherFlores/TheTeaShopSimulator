@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aacec2ce744b1441a09e3e0ca43723f, type: 3}
+  m_Name: TheNoir
+  m_EditorClassIdentifier: 
+  myItemName: The Noir
+  myItemTypeUID: 1
+  mySubtypesUID: 2
+  myShopPrice: 400
+  myDescription: asd
+  myDeliverablePrefab: {fileID: 1191912849501996473, guid: bd3c2121960b50249b1f1f4a4b182c83, type: 3}

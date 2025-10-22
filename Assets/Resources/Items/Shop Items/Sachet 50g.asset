@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aacec2ce744b1441a09e3e0ca43723f, type: 3}
+  m_Name: Sachet 50g
+  m_EditorClassIdentifier: 
+  myItemName: Tea Bag (5g)
+  myItemTypeUID: 4
+  mySubtypesUID: 7
+  myShopPrice: 5
+  myDescription: sac
+  myDeliverablePrefab: {fileID: 1308987308775427729, guid: 5a2e17f9d5d8152419937e18c57c3a86, type: 3}
