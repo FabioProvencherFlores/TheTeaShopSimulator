@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
 
 	public void RequestGoToNextDay()
 	{
-        SceneManager.LoadScene("Floor_V1");
+        SceneManager.LoadScene("Store_Floor");
 		StartNewDay();
 	}
 
