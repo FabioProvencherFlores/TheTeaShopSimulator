@@ -17,7 +17,8 @@ public enum CustomerGoal
     LookForDesiredItems,
     GoToHelpDesk,
     GoToCashRegister,
-    LeaveStore
+    LeaveStore,
+    WalkDistance
 }
 
 public struct CustomerState
@@ -113,7 +114,7 @@ public class NPCController : MonoBehaviour
     {
         myNPCManagerInstance = aManager;
         SetNewGoalChain(anArchetype.myGoalChain);
-        ItemSubtypesUID desiredType = anArchetype.GetRandomDesiredType();
+        ItemSubtypesUID desiredType = anArchetype.GetRandomDesiredType(); // #todo this should be pulled from SupplierManager, depending on what is bought in computer
         myNPCWallet.SetQuantityAndResource(0f, desiredType);
 
         print("Going off to the shop cuz I need some " + desiredType.ToString());

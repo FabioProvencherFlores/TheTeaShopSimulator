@@ -14,7 +14,7 @@ public class NPCManager : MonoBehaviour
     [SerializeField] private Transform[] npcSpawnLocations;
     [SerializeField] GameObject customerPrefab;
     [SerializeField] float myNPCSpawnProbability = 1f;
-    [SerializeField] NPCArchetype[] myNPCArchetypes;
+    NPCArchetype[] myNPCArchetypes;
 
     private void Awake()
     {
@@ -70,6 +70,25 @@ public class NPCManager : MonoBehaviour
     {
         if (!anNPCController.GoToNextGoal())
             Debug.Log("implement FORCE LEAVE");
+    }
+
+    public Vector3 GetFurthestSpawnPosition(Vector3 aPosition)
+    {
+        Vector3 position = transform.position;
+        float bestSoFar = 0f;
+
+        foreach (Transform spawnerPos  in npcSpawnLocations)
+        {
+            Vector3 distanceVector = spawnerPos.position - aPosition;
+            float distSqr = distanceVector.sqrMagnitude;
+            if (distSqr > bestSoFar)
+            {
+                bestSoFar = distSqr;
+                position = spawnerPos.position;
+            }
+        }
+
+        return position;
     }
 
     public void NotifyShoppingComplete(NPCController anNPCController)
