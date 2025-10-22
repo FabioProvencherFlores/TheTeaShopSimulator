@@ -136,7 +136,13 @@ public class PlayerController : MonoBehaviour
                 {
                     shortestDistanceSQRDSoFar = distanceSqrd;
                     _lastHitPosition = hit.point;
-                }   
+                }
+                else
+                {
+                    // prevents interacting through walls since collision will be closer
+                    currentPriorizedInteract = null;
+                    currentPriorizedComplexInteract = null;
+                }
             }
         }
 
