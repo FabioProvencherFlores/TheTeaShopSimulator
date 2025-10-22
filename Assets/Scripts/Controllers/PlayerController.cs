@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     LineRenderer lineRenderer;
 
     bool _movementIsLocked;
+    private void UpdateMovementLock(bool aMovementIsLocked) { _movementIsLocked = aMovementIsLocked; }
 
     void Awake()
     {
@@ -94,7 +95,6 @@ public class PlayerController : MonoBehaviour
                 myInteractionManagerInstance.ComplexInteractionMemory = null;
             }
         }
-
 
         // Check for interaction
         currentPriorizedInteract = null;
@@ -156,16 +156,13 @@ public class PlayerController : MonoBehaviour
             {
                 myInteractionManagerInstance.RequestDropItemOnGround(feetPosition.position + transform.forward * 0.5f, transform.rotation);
             }
-
-            // requires addition checks
-            if (AttemptDropInteraction()) return;
         }
+
         // Right-Click
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             myInteractionManagerInstance.ComplexInteractionMemory = currentPriorizedComplexInteract;
             if (currentPriorizedComplexInteract != null) myLastComplexInteractionPos = currentPriorizedComplexInteract.transform.position;
-
         }
 
         // draw line to make outline clearer
@@ -180,24 +177,6 @@ public class PlayerController : MonoBehaviour
             lineRenderer.SetPosition(0, myLastComplexInteractionPos);
             lineRenderer.SetPosition(1, cameraHolder.transform.position + cameraHolder.transform.forward);
         }
-    }
-
-    private void UpdateMovementLock(bool aMovementIsLocked) { _movementIsLocked = aMovementIsLocked; }
-
-    public bool AttemptDropInteraction()
-    {
-        if (myInteractionManagerInstance.IsPlayerCarryingObject())
-        {
-            if (currentPriorizedInteract != null && currentPriorizedInteract.GetInteractionUID() == InteractionUID.DropInSlot)
-            {
-
-                    myInteractionManagerInstance.RequestDropItemIntoContainer((DropableContainerObject)currentPriorizedInteract, _lastHitPosition);
-            }
-
-            return true;
-        }
-
-        return false;
     }
 
     private void FixedUpdate()
