@@ -114,10 +114,14 @@ public class NPCController : MonoBehaviour
     {
         myNPCManagerInstance = aManager;
         SetNewGoalChain(anArchetype.myGoalChain);
-        ItemSubtypesUID desiredType = anArchetype.GetRandomDesiredType(); // #todo this should be pulled from SupplierManager, depending on what is bought in computer
-        myNPCWallet.SetQuantityAndResource(0f, desiredType);
+        ItemSubtypesUID[] desiredType = ResourceManager.Instance.GetRandomDesiredCustomerItems(1); // #add multiple wallets to an NPC to look for multiple items in the future
 
-        print("Going off to the shop cuz I need some " + desiredType.ToString());
+        if (desiredType.Length > 0)
+        {
+            myNPCWallet.SetQuantityAndResource(0f, desiredType[0]);
+            print("Going off to the shop cuz I need some " + desiredType.ToString());
+        }
+
     }
 
     private void Update()

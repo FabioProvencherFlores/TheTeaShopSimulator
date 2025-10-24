@@ -15,6 +15,7 @@ public class NPCManager : MonoBehaviour
     [SerializeField] GameObject customerPrefab;
     [SerializeField] float myNPCSpawnProbability = 1f;
     NPCArchetype[] myNPCArchetypes;
+    List<ItemTypeUID> myAvailableItemsInStore = new List<ItemTypeUID>();
 
     private void Awake()
     {
@@ -39,6 +40,7 @@ public class NPCManager : MonoBehaviour
     private void Start()
     {
         InvokeRepeating("RollForNPCSpawn", 5f, 1f);
+        ResourceManager.Instance.OnStoreItemPurchased.AddListener(OnNewStoreItemPurchased);
     }
 
     private void RollForNPCSpawn()
@@ -46,6 +48,7 @@ public class NPCManager : MonoBehaviour
         float roll = Random.Range(0f, 100f);
         if (roll < myNPCSpawnProbability) SpawnCustomer();
     }
+
     private void SpawnCustomer()
     {
         Transform spawnPosition = transform;
@@ -55,15 +58,22 @@ public class NPCManager : MonoBehaviour
             spawnPosition = npcSpawnLocations[chosenIdx];
         }
 
-
         GameObject newCustomer = GameObject.Instantiate(customerPrefab);
         newCustomer.transform.position = spawnPosition.position;
         
         int randomIdx = Random.Range(0, myNPCArchetypes.Length);
         NPCArchetype goals = myNPCArchetypes[randomIdx];
+
+        if (!goals.HasRequiredItemsToSpawn(myAvailableItemsInStore)) return; // we should reroll instead of "not spawning"
+
         NPCController npcController = newCustomer.GetComponent<NPCController>();
         npcController.Init(this, goals);
         npcController.GoToNextGoal();
+    }
+
+    private void OnNewStoreItemPurchased(OnlineShopItem aStoreItem)
+    {
+        if (!myAvailableItemsInStore.Contains(aStoreItem.myItemTypeUID)) myAvailableItemsInStore.Add(aStoreItem.myItemTypeUID);
     }
 
     public void NotifyGoalReached(NPCController anNPCController)

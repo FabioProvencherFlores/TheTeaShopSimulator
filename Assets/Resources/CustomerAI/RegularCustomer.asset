@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultsToLeave: 1
   graceWaitPeriodSeconds: 9999
-  desiredItemPull: 010000000300000002000000
+  desiredItemAmount: 1
+  requiredItemsToSellable: 01000000
   myGoalChain:
   - {fileID: 11400000, guid: b0bc2d60943874c479bb6db654fc0141, type: 2}
   - {fileID: 11400000, guid: 940485560f364ca4db84eb8a24795d4a, type: 2}

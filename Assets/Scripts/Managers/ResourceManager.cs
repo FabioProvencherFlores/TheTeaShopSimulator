@@ -21,6 +21,7 @@ public class ResourceManager : MonoBehaviour
 
 	Dictionary<ItemSubtypesUID, ResourceItem> myResourcesDescriptors = new Dictionary<ItemSubtypesUID, ResourceItem>();
 	Dictionary<ItemSubtypesUID, OnlineShopItem> myShopItemsDescriptors = new Dictionary<ItemSubtypesUID, OnlineShopItem>();
+	List<ItemSubtypesUID> mySellableResources = new List<ItemSubtypesUID>();
 
 
 	[Header("Player Wallets")]
@@ -29,6 +30,8 @@ public class ResourceManager : MonoBehaviour
 
 	[Header("Resource Spawn Settings")]
 	[SerializeField] ItemDeliverySpotController myDeliverySpotController;
+
+	[HideInInspector] public UnityEvent<OnlineShopItem> OnStoreItemPurchased = new UnityEvent<OnlineShopItem>();
 
 
     void Awake()
@@ -58,6 +61,8 @@ public class ResourceManager : MonoBehaviour
         {
             myShopItemsDescriptors.Add(item.mySubtypesUID, item);
         }
+
+		OnStoreItemPurchased.AddListener(OnStoreItemPostPurchased);
     }
 
 	private ResourceWallet GetPlayerWalletOfType(ItemSubtypesUID aResourceType)
@@ -161,6 +166,30 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
+	private void OnStoreItemPostPurchased(OnlineShopItem anItemPurchased)
+	{
+		if (anItemPurchased.myItemTypeUID == ItemTypeUID.Tea)
+		{
+			// if this tea was not available, make it available for customers now!
+			if (!mySellableResources.Contains(anItemPurchased.mySubtypesUID)) mySellableResources.Add(anItemPurchased.mySubtypesUID);
+		}
+    }
+
+	public ItemSubtypesUID[] GetRandomDesiredCustomerItems(int anAmount)
+	{
+		List<ItemSubtypesUID> potentialItems = mySellableResources;
+
+		while (potentialItems.Count > anAmount)
+		{
+			if (potentialItems.Count == 0) break;
+
+			int randomIdx = Random.Range(0, potentialItems.Count);
+			potentialItems.RemoveAt(randomIdx);
+        }
+
+		return potentialItems.ToArray();
+	}
+
 	public bool RequestPurchaseFromOnlineStore(ItemSubtypesUID anItemSubtypeToDeliver)
     {
 		OnlineShopItem storeItem;
@@ -181,6 +210,7 @@ public class ResourceManager : MonoBehaviour
 				containerObject.AddQuantity(16000f);
 			}
 
+			OnStoreItemPurchased.Invoke(storeItem);
 			return true;
         }
 
