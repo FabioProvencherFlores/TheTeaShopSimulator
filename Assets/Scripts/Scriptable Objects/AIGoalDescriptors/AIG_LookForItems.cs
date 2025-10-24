@@ -51,8 +51,20 @@ public class AIG_LookForItems : AIG_BaseCell
                 return;
             }
 
-            aController.SetNewTargetPosition(myTabletHelpers[0].transform.position);
             myNextTabletteLooker = myTabletHelpers[0];
+            while (!myNextTabletteLooker.ContainersContainItems()) // skip containers that are empty
+            {
+                myTabletHelpers.RemoveAt(0);
+                if (myTabletHelpers.Count == 0)
+                {
+                    GoalCompleted.Invoke();
+                    return;
+                }
+
+                myNextTabletteLooker = myTabletHelpers[0];
+            }
+
+            aController.SetNewTargetPosition(myTabletHelpers[0].transform.position);
             myTabletHelpers.RemoveAt(0);
         }
         else

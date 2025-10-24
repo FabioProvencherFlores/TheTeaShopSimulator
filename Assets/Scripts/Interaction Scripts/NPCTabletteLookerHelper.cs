@@ -14,6 +14,11 @@ public class NPCTabletteLookerHelper : MonoBehaviour
         return mySubcontainerInstance.GetPickableItemContainingType(anItemSubtype);
     }
 
+    public bool ContainersContainItems()
+    {
+        return !mySubcontainerInstance.IsEmpty();
+    }
+
     private void OnValidate()
     {
         if (mySubcontainerInstance != null) Debug.DrawLine(transform.position, mySubcontainerInstance.transform.position, Color.red, 1f);
