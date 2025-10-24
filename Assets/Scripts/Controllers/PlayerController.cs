@@ -83,10 +83,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        timeOfDayTxt.text = ""; // #todo remove this timer all together (code and prefab) to keep only MasterUI!!!
+        if (_movementIsLocked) return;
+
         currentTimeOfDay.SetTime(GameManager.Instance.TimeOfDayInMinutes);
         timeOfDayTxt.text = currentTimeOfDay.ToString();
-
-        if (_movementIsLocked) return;
 
         if (myInteractionManagerInstance.ComplexInteractionMemory != null)
         {

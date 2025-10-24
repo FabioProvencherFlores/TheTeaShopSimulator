@@ -4,9 +4,11 @@ using UnityEngine;
 public class UIComputerController : MonoBehaviour
 {
 
-    [Header("Computer Screen Controllers")]
-    [SerializeField] UISingleWindowController myResourceStoreController;
+    [Header("Computer Window Updaters")]
+    [SerializeField] UIHomePageUpdater homePageUpdater;
+    [SerializeField] UIResourceStoreUpdater resourceStoreUpdater;
 
+    [Header("Data")]
     [SerializeField] GameObject itemPannel;
     [SerializeField] GameObject gridObj;
 
@@ -21,6 +23,8 @@ public class UIComputerController : MonoBehaviour
 
         if (_isInit) return;
         else Init();
+
+
     }
 
     void Init()
@@ -42,6 +46,8 @@ public class UIComputerController : MonoBehaviour
         }
 
         _isInit = true;
+
+        GoToHomeScreen();
     }
 
     private void OnUIItemClicked(UIStoreItemUpdater.ButtonType aButtonType, int anIdx)
@@ -55,9 +61,34 @@ public class UIComputerController : MonoBehaviour
         }
     }
 
+    private void GoToHomeScreen()
+    {
+        homePageUpdater.gameObject.SetActive(true);
+        resourceStoreUpdater.gameObject.SetActive(false);
+
+        homePageUpdater.Init(this);
+    }
+
+    private void GoToResourceStore()
+    {
+        homePageUpdater.gameObject.SetActive(false);
+        resourceStoreUpdater.gameObject.SetActive(true);
+
+        resourceStoreUpdater.Init(this);
+    }
+
+
+    public void RequestGoToResourceStore()
+    {
+        GoToResourceStore();
+    }
+
     public void OnExitButtonClicked()
     {
         // cleanup if needed
+        myLoadedUIItems.Clear();
+        _isInit = false;
+
         GameManager.Instance.GoToRegularGameplay();
     }
 
