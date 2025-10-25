@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UIStoreItemUpdater : MonoBehaviour
+public class UIItem_ResourceUpdater : MonoBehaviour
 {
     public enum ButtonType
     {

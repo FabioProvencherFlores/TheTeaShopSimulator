@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEditor.Progress;
@@ -22,6 +23,7 @@ public class ResourceManager : MonoBehaviour
 	Dictionary<ItemSubtypesUID, ResourceItem> myResourcesDescriptors = new Dictionary<ItemSubtypesUID, ResourceItem>();
 	Dictionary<ItemSubtypesUID, OnlineShopItem> myShopItemsDescriptors = new Dictionary<ItemSubtypesUID, OnlineShopItem>();
 	List<ItemSubtypesUID> mySellableResources = new List<ItemSubtypesUID>();
+	List<ItemSubtypesUID> myAvailableResourcesToPlayer = new List<ItemSubtypesUID>();
 
 
 	[Header("Player Wallets")]
@@ -32,6 +34,7 @@ public class ResourceManager : MonoBehaviour
 	[SerializeField] ItemDeliverySpotController myDeliverySpotController;
 
 	[HideInInspector] public UnityEvent<OnlineShopItem> OnStoreItemPurchased = new UnityEvent<OnlineShopItem>();
+
 
 
     void Awake()
@@ -65,7 +68,12 @@ public class ResourceManager : MonoBehaviour
 		OnStoreItemPurchased.AddListener(OnStoreItemPostPurchased);
     }
 
-	private ResourceWallet GetPlayerWalletOfType(ItemSubtypesUID aResourceType)
+    private void Start()
+    {
+		SupplierManager.Instance.OnBundleUnlock.AddListener(OnNewBundleUnlocked);
+    }
+
+    private ResourceWallet GetPlayerWalletOfType(ItemSubtypesUID aResourceType)
 	{
         ResourceWallet wallet;
         myplayerWallets.TryGetValue(aResourceType, out wallet);
@@ -96,6 +104,18 @@ public class ResourceManager : MonoBehaviour
 		if (myResourcesDescriptors.TryGetValue(anItemSubtype, out item)) return item;
 		return null;
 	}
+
+	private void OnNewBundleUnlocked(ResourceBundleUnlock bundleUnlockData)
+	{
+		foreach (ItemSubtypesUID itemSubtype in bundleUnlockData.itemsSubtypesInBundle)
+		{
+			if (!myAvailableResourcesToPlayer.Contains(itemSubtype))
+			{
+				myAvailableResourcesToPlayer.Add(itemSubtype);
+			}
+		}
+
+    }
 
 	public bool RequestResourceTransfer(ResourceContainerObject aGiver, ResourceContainerObject aReceiver)
 	{
@@ -222,8 +242,10 @@ public class ResourceManager : MonoBehaviour
 		aListOfItems = new List<OnlineShopItem>();
         foreach (var item in myShopItemsDescriptors)
         {
-			// #todo ajouter logique de "purchasable", lorsqu on va avoir des trucs a debloquer
-			aListOfItems.Add(item.Value);
+			if (myAvailableResourcesToPlayer.Contains(item.Value.mySubtypesUID))
+			{
+				aListOfItems.Add(item.Value);
+			}
 		}
     }
 

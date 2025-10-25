@@ -9,7 +9,7 @@ public class UIResourceStoreUpdater : MonoBehaviour
     [Header("Data")]
     [SerializeField] GameObject itemPanelObj;
     [SerializeField] GameObject shopItemPrefab;
-    List<UIStoreItemUpdater> myLoadedUIItems = new List<UIStoreItemUpdater>();
+    List<UIItem_ResourceUpdater> myLoadedUIItems = new List<UIItem_ResourceUpdater>();
 
     public void Init(UIComputerController aController, ResourceManager aResourceManager)
 	{
@@ -23,7 +23,7 @@ public class UIResourceStoreUpdater : MonoBehaviour
         {
             GameObject newItem = GameObject.Instantiate(shopItemPrefab);
             newItem.transform.SetParent(itemPanelObj.transform, false);
-            UIStoreItemUpdater uiItem = newItem.GetComponent<UIStoreItemUpdater>();
+            UIItem_ResourceUpdater uiItem = newItem.GetComponent<UIItem_ResourceUpdater>();
             uiItem.SetItemData(item);
             uiItem.MyShopIntex = idx;
             uiItem.OnWorldMovementLockedChange.AddListener(OnUIItemClicked);
@@ -33,15 +33,21 @@ public class UIResourceStoreUpdater : MonoBehaviour
         }
     }
 
-    private void OnUIItemClicked(UIStoreItemUpdater.ButtonType aButtonType, int anIdx)
+    private void OnUIItemClicked(UIItem_ResourceUpdater.ButtonType aButtonType, int anIdx)
     {
         if (anIdx >= myLoadedUIItems.Count) return;
-        UIStoreItemUpdater clickedItem = myLoadedUIItems[anIdx];
+        UIItem_ResourceUpdater clickedItem = myLoadedUIItems[anIdx];
         myController.RequestResourceStoreAction(aButtonType, clickedItem.GetItemSubtype());
     }
 
     public void OnBackButtonClicked()
 	{
-		myController.RequestBackToHomeScreen();
+        for (int i = 0; i < itemPanelObj.transform.childCount; i++)
+        {
+            Transform child = itemPanelObj.transform.GetChild(i);
+            DestroyImmediate(child.gameObject);
+        }
+
+        myController.RequestBackToHomeScreen();
 	}
 }

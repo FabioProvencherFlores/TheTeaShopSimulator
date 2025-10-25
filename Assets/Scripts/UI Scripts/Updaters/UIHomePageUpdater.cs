@@ -29,9 +29,15 @@ public class UIHomePageUpdater : MonoBehaviour
 
     public void OnShopIconClicked()
     {
-        Debug.Log("CLICKED");
         if (myController == null) return;
 
         myController.RequestGoToResourceStore();
+    }
+
+    public void OnSupplyStoreIconClicked()
+    {
+        if (myController == null) return;
+
+        myController.RequestGoToSupplyStore();
     }
 }

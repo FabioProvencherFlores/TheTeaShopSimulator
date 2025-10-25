@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UIStoreItemUpdater;
+using static UIItem_ResourceUpdater;
 
 public class UIComputerController : MonoBehaviour
 {
@@ -8,24 +8,25 @@ public class UIComputerController : MonoBehaviour
     [Header("Computer Window Updaters")]
     [SerializeField] UIHomePageUpdater homePageUpdater;
     [SerializeField] UIResourceStoreUpdater resourceStoreUpdater;
+    [SerializeField] UISupplyStoreUpdater supplyStoreUpdater;
 
     [Header("Data")]
     [SerializeField] GameObject itemPannel;
     [SerializeField] GameObject gridObj;
 
-    List<UIStoreItemUpdater> myLoadedUIItems = new List<UIStoreItemUpdater>();
+    List<UIItem_ResourceUpdater> myLoadedUIItems = new List<UIItem_ResourceUpdater>();
 
     private ResourceManager _resourceManagerInstance;
+    private SupplierManager _supplierManagerInstance;
     bool _isInit = false;
     
     void Start()
     {
         if (_resourceManagerInstance == null) _resourceManagerInstance = ResourceManager.Instance;
+        if (_supplierManagerInstance == null) _supplierManagerInstance = SupplierManager.Instance;
 
         if (_isInit) return;
         else Init();
-
-
     }
 
     void Init()
@@ -33,9 +34,9 @@ public class UIComputerController : MonoBehaviour
         GoToHomeScreen();
     }
 
-    public void RequestResourceStoreAction(UIStoreItemUpdater.ButtonType anAction, ItemSubtypesUID aResourceSubtype)
+    public void RequestResourceStoreAction(UIItem_ResourceUpdater.ButtonType anAction, ItemSubtypesUID aResourceSubtype)
     {
-        if (anAction == UIStoreItemUpdater.ButtonType.Buy)
+        if (anAction == UIItem_ResourceUpdater.ButtonType.Buy)
         {
             _resourceManagerInstance.RequestPurchaseFromOnlineStore(aResourceSubtype);
         }
@@ -45,6 +46,7 @@ public class UIComputerController : MonoBehaviour
     {
         homePageUpdater.gameObject.SetActive(true);
         resourceStoreUpdater.gameObject.SetActive(false);
+        supplyStoreUpdater.gameObject.SetActive(false);
 
         homePageUpdater.Init(this);
     }
@@ -53,15 +55,25 @@ public class UIComputerController : MonoBehaviour
     {
         homePageUpdater.gameObject.SetActive(false);
         resourceStoreUpdater.gameObject.SetActive(true);
+        supplyStoreUpdater.gameObject.SetActive(false);
 
         resourceStoreUpdater.Init(this, _resourceManagerInstance);
     }
 
-
-    public void RequestGoToResourceStore()
+    private void GoToSupplyStore()
     {
-        GoToResourceStore();
+        homePageUpdater.gameObject.SetActive(false);
+        resourceStoreUpdater.gameObject.SetActive(false);
+        supplyStoreUpdater.gameObject.SetActive(true);
+
+        supplyStoreUpdater.Init(this, _supplierManagerInstance);
     }
+
+    public void RequestUnlockBundle(int anID)
+    {
+        _supplierManagerInstance.UnlockBundleFromID(anID);
+    }
+
 
     public void OnExitButtonClicked()
     {
@@ -72,8 +84,18 @@ public class UIComputerController : MonoBehaviour
         GameManager.Instance.GoToRegularGameplay();
     }
 
+    public void RequestGoToResourceStore()
+    {
+        GoToResourceStore();
+    }
+
     public void RequestBackToHomeScreen()
     {
         GoToHomeScreen();
+    }
+
+    public void RequestGoToSupplyStore()
+    {
+        GoToSupplyStore();
     }
 }

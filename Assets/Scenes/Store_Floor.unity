@@ -4313,6 +4313,7 @@ GameObject:
   - component: {fileID: 1251973548}
   - component: {fileID: 1251973549}
   - component: {fileID: 1251973550}
+  - component: {fileID: 1251973551}
   m_Layer: 0
   m_Name: manager
   m_TagString: Untagged
@@ -4404,6 +4405,21 @@ MonoBehaviour:
   - {fileID: 1463396796}
   customerPrefab: {fileID: 1480986653970448147, guid: e614c624de0658043992418348c8e985, type: 3}
   myNPCSpawnProbability: 2
+--- !u!114 &1251973551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251973545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ec66b58beeb924d9327272f44ce6c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnBundleUnlock:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1257169691 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4154175438781102700, guid: 15c74efc7ba328e45a53caa90c7a6c5c, type: 3}
