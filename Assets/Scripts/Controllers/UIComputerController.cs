@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UIStoreItemUpdater;
 
 public class UIComputerController : MonoBehaviour
 {
@@ -29,35 +30,14 @@ public class UIComputerController : MonoBehaviour
 
     void Init()
     {
-        List<OnlineShopItem> storeItems;
-        _resourceManagerInstance.GetStorePurchasableItems(out storeItems);
-        int idx = 0;
-        foreach (OnlineShopItem item in storeItems)
-        {
-            GameObject newItem = GameObject.Instantiate(itemPannel);
-            newItem.transform.SetParent(gridObj.transform, false);
-            UIStoreItemUpdater uiItem = newItem.GetComponent<UIStoreItemUpdater>();
-            uiItem.SetItemData(item);
-            uiItem.MyShopIntex = idx;
-            uiItem.OnWorldMovementLockedChange.AddListener(OnUIItemClicked);
-            myLoadedUIItems.Add(uiItem);
-
-            ++idx;
-        }
-
-        _isInit = true;
-
         GoToHomeScreen();
     }
 
-    private void OnUIItemClicked(UIStoreItemUpdater.ButtonType aButtonType, int anIdx)
+    public void RequestResourceStoreAction(UIStoreItemUpdater.ButtonType anAction, ItemSubtypesUID aResourceSubtype)
     {
-        if (anIdx >= myLoadedUIItems.Count) return;
-
-        UIStoreItemUpdater clickedItem = myLoadedUIItems[anIdx];
-        if (aButtonType == UIStoreItemUpdater.ButtonType.Buy)
+        if (anAction == UIStoreItemUpdater.ButtonType.Buy)
         {
-            _resourceManagerInstance.RequestPurchaseFromOnlineStore(clickedItem.GetItemSubtype());
+            _resourceManagerInstance.RequestPurchaseFromOnlineStore(aResourceSubtype);
         }
     }
 
@@ -74,7 +54,7 @@ public class UIComputerController : MonoBehaviour
         homePageUpdater.gameObject.SetActive(false);
         resourceStoreUpdater.gameObject.SetActive(true);
 
-        resourceStoreUpdater.Init(this);
+        resourceStoreUpdater.Init(this, _resourceManagerInstance);
     }
 
 
