@@ -8,6 +8,10 @@ public class UIResourceStoreUpdater : MonoBehaviour
 	public void Init(UIComputerController aController)
 	{
 		myController = aController;
-
     }
+
+	public void OnBackButtonClicked()
+	{
+		myController.RequestBackToHomeScreen();
+	}
 }

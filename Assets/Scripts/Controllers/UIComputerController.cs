@@ -92,8 +92,8 @@ public class UIComputerController : MonoBehaviour
         GameManager.Instance.GoToRegularGameplay();
     }
 
-    public void OnBackButtonClicked()
+    public void RequestBackToHomeScreen()
     {
-        // when we have multiple windows in the computer
+        GoToHomeScreen();
     }
 }

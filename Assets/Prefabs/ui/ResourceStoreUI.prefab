@@ -3286,8 +3286,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -365.5, y: 165}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -363.96188, y: 163.15425}
+  m_SizeDelta: {x: 90.5648, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7701249425193742354
 CanvasRenderer:
@@ -3371,9 +3371,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: loadSceneHome, Assembly-CSharp
-        m_MethodName: SceneHomeLoader
+      - m_Target: {fileID: 6576989793375265571}
+        m_TargetAssemblyTypeName: UIResourceStoreUpdater, Assembly-CSharp
+        m_MethodName: OnBackButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
