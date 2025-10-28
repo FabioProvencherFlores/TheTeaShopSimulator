@@ -50,4 +50,15 @@ public class UISupplyStoreUpdater : MonoBehaviour
 
         myController.RequestBackToHomeScreen();
     }
+
+    public void OnCloseButtonClicked()
+    {
+		for (int i = 0; i < itemPanelObj.transform.childCount; i++)
+		{
+			Transform child = itemPanelObj.transform.GetChild(i);
+			DestroyImmediate(child.gameObject);
+		}
+
+		myController.RequestCloseComputer();
+	}
 }

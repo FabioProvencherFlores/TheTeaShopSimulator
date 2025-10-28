@@ -77,12 +77,17 @@ public class UIComputerController : MonoBehaviour
 
     public void OnExitButtonClicked()
     {
-        // cleanup if needed
-        myLoadedUIItems.Clear();
-        _isInit = false;
+        RequestCloseComputer();
+	}
 
-        GameManager.Instance.GoToRegularGameplay();
-    }
+    public void RequestCloseComputer()
+    {
+		// cleanup if needed
+		myLoadedUIItems.Clear();
+		_isInit = false;
+
+		GameManager.Instance.GoToRegularGameplay();
+	}
 
     public void RequestGoToResourceStore()
     {
